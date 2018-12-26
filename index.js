@@ -204,6 +204,10 @@ class Timetable {
 
     return timetableData
   }
+
+  getTempData () {
+    return this._tempData
+  }
 }
 
 module.exports = Timetable
