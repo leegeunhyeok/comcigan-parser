@@ -1,6 +1,15 @@
 /**
- * @description 숫자 데이를 2자리 수 만큼 0 추가
- * @param {number} targetNumber 0 추가할 숫자
+ * util.js
+ * 
+ * @description 자주 사용하는 필요 모듈
+ * @author Leegeunhyeok
+ * @version 0.0.2
+ * 
+ */
+
+/**
+ * @description 숫자 데이터를 2자리 수로 변경 (00)
+ * @param {number} targetNumber 0을 추가할 숫자
  * @return {string}
  */
 const appendZero = (targetNumber) => {
