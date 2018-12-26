@@ -1,0 +1,30 @@
+{
+  "name": "comcigan-parser",
+  "version": "0.0.1",
+  "description": "Parse timetable data from comcigan.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leegeunhyeok/comcigan-parser.git"
+  },
+  "keywords": [
+    "timetable",
+    "school"
+  ],
+  "author": "Leegeunhyeok",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leegeunhyeok/comcigan-parser/issues"
+  },
+  "homepage": "https://github.com/leegeunhyeok/comcigan-parser#readme",
+  "dependencies": {
+    "iconv-lite": "^0.4.24",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "standard": "^12.0.1"
+  }
+}
