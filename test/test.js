@@ -1,10 +1,10 @@
 /**
  * test.js
- * 
+ *
  * @description 테스트 코드
  * @author Leegeunhyeok
  * @version 0.0.3
- * 
+ *
  */
 
 const Timetable = require('../index')

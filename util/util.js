@@ -1,10 +1,10 @@
 /**
  * util.js
- * 
+ *
  * @description 자주 사용하는 필요 모듈
  * @author Leegeunhyeok
  * @version 0.0.3
- * 
+ *
  */
 
 /**

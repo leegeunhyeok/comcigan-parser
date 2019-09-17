@@ -1,16 +1,16 @@
 /**
  * comcigan-parser Module
- * 
+ *
  * index.js
- * 
+ *
  * Github : https://github.com/leegeunhyeok/comcigan-parser
  * NPM : https://www.npmjs.com/package/comcigan-parser
- * 
+ *
  * @description 컴시간 시간표 파싱 라이브러리
  * @author Leegeunhyeok
  * @license MIT
  * @version 0.0.3
- * 
+ *
  */
 
 const request = require('request')
@@ -187,7 +187,7 @@ class Timetable {
                 dd.forEach(data => {
                   total += data.reduce((v, acc) => acc + v, 0)
                 })
-                  
+
                 if (total > 0) {
                   timedataProp = k
                   break
