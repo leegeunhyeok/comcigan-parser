@@ -8,12 +8,19 @@
 
 # 기능
 - 학교명 입력 후 바로 사용 가능
-- 시간표 데이터 파싱
+- 학급 시간표 데이터 제공
 
 # 정보
 아래 두 챗봇에서 사용하던 시간표 파싱 기능을 라이브러리로 개발하였습니다.
 - [광명경영회계고등학교 카카오 자동응답 API 챗봇](https://github.com/leegeunhyeok/GMMAHS-KAKAO)
 - [광명경영회계고등학교 카카오 오픈빌더 i 챗봇](https://github.com/leegeunhyeok/GMMAHS-KAKAO-i)
+
+컴시간 서비스를 사용하는 학교의 시간표 데이터를 쉽게 수집하여 사용할 수 있습니다.
+
+컴시간측의 소스코드 변경으로 인해 시간표 데이터 파싱이 불가능 할 수 있습니다.
+문제가 발생할 경우 [여기](#문제-신고)를 참고해주세요
+
+> (주의!) 본 라이브러리는 비공식적으로 컴시간 서비스의 데이터를 파싱하며, 상업적인 용도로 사용하다 문제가 발생할 경우 책임을 지지 않습니다.
 
 # 설치하기
 ```bash
@@ -23,7 +30,7 @@ npm i comcigan-parser
 # 개발 문서
 
 ## Timetable
-모듈을 불러오면 Timetable 클래스의 인스턴스를 생성할 수 있습니다.
+Timetable 클래스의 인스턴스를 생성하여 사용합니다.
 ```javascript
 const Timetable = require('comcigan-parser')
 new Timetable()
@@ -48,7 +55,7 @@ new Timetable()
 | maxGrade | number | 3 |
 
 - tempSave - 시간표 데이터 파싱 후 인스턴스에 시간표 데이터를 임시로 저장합니다.
-- 선생님 이름 추출 시 참고할 성 목록입니다.
+- 선생님 이름 추출 시 참고할 성씨 목록입니다.
 - 최대 학년을 지정합니다.
 
 Return - `Promise<any>`
@@ -153,8 +160,29 @@ const test = async () => {
 {
   "1": {
     // 1학년
-    "1": [ // 1반 
-      [월요일시간표],
+    "1": [ // 1반
+      [ // 월요일 시간표
+        {
+          grade: 1,                   // 학년
+          class: 1,                  // 반
+          weekday: 1,                 // 요일 (1: 월 ~ 5: 금)
+          weekdayString: '월',        // 요일 문자열
+          class_time: 1,              // 교시
+          code: '5644',               // 수업 코드
+          teacher: '이희*',           // 선생님 성함
+          subject: '실용비즈니스영어'  // 과목명
+        },
+        {
+          grade: 1,
+          class: 1,
+          weekday: 1,
+          weekdayString: '월',
+          class_time: 2,
+          code: '1606',
+          teacher: '강연*',
+          subject: '진로활동'
+        }
+      ],
       [화요일시간표],
       [수요일시간표],
       [목요일시간표],
@@ -181,35 +209,6 @@ const test = async () => {
 }
 ```
 
-각 시간표 데이터 형식
-- 각 요일 `Array` 에는 아래와 같은 형식의 데이터가 포함되어있음 
-
-```javascript
-[
-  {
-    grade: 3,                   // 학년
-    class: 10,                  // 반
-    weekday: 1,                 // 요일 (1: 월 ~ 5: 금)
-    weekdayString: '월',        // 요일 문자열
-    class_time: 1,              // 교시
-    code: '5644',               // 수업 코드
-    teacher: '이희*',           // 선생님 성함
-    subject: '실용비즈니스영어'  // 과목명
-  },
-  {
-    grade: 3,
-    class: 10,
-    weekday: 1,
-    weekdayString: '월',
-    class_time: 2,
-    code: '1606',
-    teacher: '강연*',
-    subject: '진로활동'
-  },
-  ...
-]
-```
-응용 방법
 ```javascript
 getTimetable().then(result => {
   // 3학년 8반 시간표 (월 ~ 금)
