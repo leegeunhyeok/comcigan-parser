@@ -239,7 +239,7 @@ getTimetable().then(result => {
   // 1학년 1반 월요일 시간표
   console.log(result[1][1][0])
 
-  // 1학년 1반 금요일 3교시 시간표 
+  // 2학년 5반 금요일 3교시 시간표 
   console.log(result[2][5][4][2])
 })
 ```
