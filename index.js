@@ -183,8 +183,15 @@ class Timetable {
 
             for (let dd of d) {
               if (dd.length === 7 && typeof dd[0] === 'object') {
-                timedataProp = k
-                break
+                let total = 0
+                dd.forEach(data => {
+                  total += data.reduce((v, acc) => acc + v, 0)
+                })
+                  
+                if (total > 0) {
+                  timedataProp = k
+                  break
+                }
               }
             }
 
