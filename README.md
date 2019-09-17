@@ -134,9 +134,8 @@ timetable.getTimetable().then(result => {
 })
 ```
 
-## 실사용 예제
+## 사용 예제
 
-### 비동기 함수 방식
 ```javascript
 const Timetable = require('comcigan-parser')
 const timetable = new Timetable()
@@ -147,26 +146,6 @@ const test = async () => {
   const result = await timetable.getTimetable()
   console.log(result)
 }
-```
-
-### 프라미스 방식
-```javascript
-const Timetable = require('comcigan-parser')
-const timetable = new Timetable()
-
-timetable.init()
-.then(() => {
-  return timetable.setSchool('광명경영회계고등학교')
-})
-.then(() => {
-  return timetable.getTimetable()
-})
-.then(result => {
-  console.log(result)
-})
-.catch(err => {
-  console.error(err)
-})
 ```
 
 # 데이터 형식
@@ -248,6 +227,8 @@ getTimetable().then(result => {
 시간표 파싱이 되지 않거나 문제가 발생한 경우 [이슈](https://github.com/leegeunhyeok/comcigan-parser/issues)를 남겨주세요.
 
 # 변경사항
+- `0.0.3`
+  - 데이터 파싱 문제 수정
 - `0.0.2`
   - 개발 문서 추가
   - `init`의 기본 옵션 문제 수정
