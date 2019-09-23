@@ -9,7 +9,7 @@
  * @description 컴시간 시간표 파싱 라이브러리
  * @author Leegeunhyeok
  * @license MIT
- * @version 0.1.0
+ * @version 0.1.1
  *
  */
 
@@ -30,15 +30,15 @@ class Timetable {
    * @param {any} option 초기화 옵션 객체
    */
   async init (option) {
-    if (option.tempSave !== undefined) {
-      console.log('[comcigan-parser] WARNING: tempSave option was deprecated at >= 0.1.0')
-    }
-
     if (option) {
       this._option = {
         firstNames: option.firstNames || ['김', '박', '이', '송'],
         maxGrade: option.maxGrade || 3,
         timetableThreshold: option.timetableThreshold || 30000
+      }
+
+      if (option['tempSave'] !== undefined) {
+        console.log('[comcigan-parser] WARNING: tempSave option was deprecated at >= 0.1.0')
       }
     } else {
       this._option = {
