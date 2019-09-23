@@ -1,11 +1,11 @@
 {
   "name": "comcigan-parser",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Parse timetable data from comcigan.com",
   "main": "index.js",
   "scripts": {
     "test": "node ./test/test.js",
-    "standard": "standard && node my-tests.js"
+    "standard": "standard"
   },
   "repository": {
     "type": "git",
