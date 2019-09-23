@@ -30,16 +30,18 @@ class Timetable {
    * @param {any} option 초기화 옵션 객체
    */
   async init (option) {
+    if (option.tempSave !== undefined) {
+      console.log('[comcigan-parser] WARNING: tempSave option was deprecated at >= 0.1.0')
+    }
+
     if (option) {
       this._option = {
-        tempSave: option.tempSave || false,
         firstNames: option.firstNames || ['김', '박', '이', '송'],
         maxGrade: option.maxGrade || 3,
         timetableThreshold: option.timetableThreshold || 30000
       }
     } else {
       this._option = {
-        tempSave: false,
         firstNames: ['김', '박', '이', '송'],
         maxGrade: 3,
         timetableThreshold: 30000
@@ -259,20 +261,7 @@ class Timetable {
       }
     }
 
-    // 옵션 중 tempSave가 활성화 된 경우
-    if (this._option.tempSave) {
-      this._tempData = timetableData
-    }
-
     return timetableData
-  }
-
-  /**
-   * @description 임시 저장된 데이터를 반환합니다.
-   * @return {any} 임시 저장된 데이터
-   */
-  getTempData () {
-    return this._tempData || {}
   }
 }
 

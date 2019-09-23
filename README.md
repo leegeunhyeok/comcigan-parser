@@ -50,13 +50,16 @@ new Timetable()
 
 | Option | Value | default |
 |:--|:--:|:--:|
-| tempSave | boolean | false |
 | firstNames | array | ['김', '박', '이', '송'] |
 | maxGrade | number | 3 |
+| timetableThreshold | number | 30000 |
 
-- tempSave - 시간표 데이터 파싱 후 인스턴스에 시간표 데이터를 임시로 저장합니다.
-- 선생님 이름 추출 시 참고할 성씨 목록입니다.
-- 최대 학년을 지정합니다.
+- firstNames - 교사 이름 추출 시 참고할 성씨 목록입니다.
+- maxGrade - 최대 학년을 지정합니다.
+- timetableThreshold - 시간표 데이터 임계값
+  - 응답 데이터는 `[0, 0, 0, 0, 0]`, `[0, 10324, 52201, 8909, 0]` 이와 같은 형식으로 수집되며 각 요소를 모두 더한 값이 지정한 임계값을 넘을 경우 해당 값을 시간표 데이터로 사용함
+  - 비어있는 데이터 ([0, 0, 0, 0, 0])를 필터링하기 위해 사용
+
 
 Return - `Promise<any>`
 
@@ -109,9 +112,7 @@ Return - `any`
 const Timetable = require('comcigan-parser')
 const timetable = new Timetable()
 
-timetable.init({
-  tempSave: true
-}).then(() => {
+timetable.init(option).then(() => {
   // 초기화 완료..
 })
 ```
@@ -226,6 +227,9 @@ getTimetable().then(result => {
 시간표 파싱이 되지 않거나 문제가 발생한 경우 [이슈](https://github.com/leegeunhyeok/comcigan-parser/issues)를 남겨주세요.
 
 # 변경사항
+- `0.1.0`
+  - tempSave 옵션 삭제
+  - 시간표 추출 데이터 임계값 옵션 추가 (자세한 사항은 [여기](#method-timetableinit) 참조)
 - `0.0.3`
   - 데이터 파싱 문제 수정
 - `0.0.2`
