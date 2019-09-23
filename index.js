@@ -34,18 +34,20 @@ class Timetable {
       this._option = {
         tempSave: option.tempSave || false,
         firstNames: option.firstNames || ['김', '박', '이', '송'],
-        maxGrade: option.maxGrade || 3
+        maxGrade: option.maxGrade || 3,
+        timetableThreshold: option.timetableThreshold || 30000
       }
     } else {
       this._option = {
         tempSave: false,
         firstNames: ['김', '박', '이', '송'],
-        maxGrade: 3
+        maxGrade: 3,
+        timetableThreshold: 30000
       }
     }
 
     await new Promise((resolve, reject) => {
-      request(this._url, (err, res, body) => {
+      request(this._url, (err, _, body) => {
         if (err) {
           reject(err)
         }
@@ -188,7 +190,7 @@ class Timetable {
                   total += data.reduce((v, acc) => acc + v, 0)
                 })
 
-                if (total > 0) {
+                if (total > this._option['timetableThreshold']) {
                   timedataProp = k
                   break
                 }
