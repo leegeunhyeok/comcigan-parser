@@ -227,6 +227,8 @@ getTimetable().then(result => {
 시간표 파싱이 되지 않거나 문제가 발생한 경우 [이슈](https://github.com/leegeunhyeok/comcigan-parser/issues)를 남겨주세요.
 
 # 변경사항
+- `0.1.1`
+  - tempSave 옵션 문제 수정
 - `0.1.0`
   - tempSave 옵션 삭제
   - 시간표 추출 데이터 임계값 옵션 추가 (자세한 사항은 [여기](#method-timetableinit) 참조)

@@ -3,7 +3,7 @@
  *
  * @description 테스트 코드
  * @author Leegeunhyeok
- * @version 0.1.0
+ * @version 0.1.1
  *
  */
 
@@ -11,11 +11,13 @@ const Timetable = require('../index')
 const timetable = new Timetable()
 
 const test = async () => {
-  await timetable.init()
+  await timetable.init({
+    tempSave: true
+  })
   await timetable.setSchool('광명경영회계고등학교')
   const result = await timetable.getTimetable()
 
-  console.log(JSON.stringify(result, null, 2))
+  // console.log(JSON.stringify(result, null, 2))
   console.log('====================')
 
   // result[학년][반][요일][교시]
