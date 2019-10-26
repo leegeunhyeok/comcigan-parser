@@ -6,11 +6,11 @@
 
 [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
 
-# 기능
+## 기능
 - 학교명 입력 후 바로 사용 가능
 - 학급 시간표 데이터 제공
 
-# 정보
+## 정보
 아래 두 챗봇에서 사용하던 시간표 파싱 기능을 라이브러리로 개발하였습니다.
 - [광명경영회계고등학교 카카오 자동응답 API 챗봇](https://github.com/leegeunhyeok/GMMAHS-KAKAO)
 - [광명경영회계고등학교 카카오 오픈빌더 i 챗봇](https://github.com/leegeunhyeok/GMMAHS-KAKAO-i)
@@ -22,14 +22,14 @@
 
 > (주의!) 본 라이브러리는 비공식적으로 컴시간 서비스의 데이터를 파싱하며, 상업적인 용도로 사용하다 문제가 발생할 경우 책임을 지지 않습니다.
 
-# 설치하기
+## 설치하기
 ```bash
 npm i comcigan-parser
 ```
 
-# 개발 문서
+## 개발 문서
 
-## Timetable
+### Timetable
 Timetable 클래스의 인스턴스를 생성하여 사용합니다.
 ```javascript
 const Timetable = require('comcigan-parser')
@@ -37,7 +37,7 @@ new Timetable()
 ```
 - - -
 
-## (Method) Timetable.init
+### (Method) Timetable.init
 인스턴스 정보를 초기화 합니다.  
 옵션을 추가하여 사용자 설정을 진행할 수 있습니다.
 
@@ -69,7 +69,7 @@ timetable.init(option)
 ```
 - - -
 
-## (Method) Timetable.setSchool
+### (Method) Timetable.setSchool
 시간표를 불러올 학교를 지정합니다.
 > 컴시간에 등록된 학교가 아닐 경우 검색되지 않습니다.
 
@@ -84,7 +84,7 @@ timetable.search(keyword)
 ```
 - - -
 
-## (Method) Timetable.getTimetable
+### (Method) Timetable.getTimetable
 지정한 학교의 시간표 데이터를 불러옵니다.
 
 Return - `Promise<any>`
@@ -94,15 +94,18 @@ timetable.getTimetable()
 ```
 - - -
 
-## (Method) Timetable.getTempData
-임시 저장된 시간표 데이터를 불러옵니다.
-> 임시 저장된 시간표가 없을 경우 빈 객체를 반환합니다.
+### (Method) Timetable.getClassTime
+각 교시별 수업 시작/종료 시간정보를 반환합니다.
 
-Return - `any`
+Return - `Array<string>`
+
+```javascript
+timetable.getClassTime()
+```
 - - -
 
-# 사용 방법
-## Timetable 인스턴스 생성
+## 사용 방법
+### Timetable 인스턴스 생성
 `comcigan-parser` 모듈을 불러온 후 인스턴스를 생성합니다.  
 생성 후 반드시 `init(option)`를 호출하여 초기화 합니다.
 
@@ -117,7 +120,7 @@ timetable.init(option).then(() => {
 })
 ```
 
-## 학교 설정
+### 학교 설정
 컴시간에 등록되어있는 학교를 검색하고 인스턴스에 등록합니다.
 > 학교가 여러개 조회되거나 검색 결과가 없는 경우 예외가 발생합니다.
 
@@ -127,7 +130,7 @@ timetable.setSchool('광명경영회계고등학교').then(() => {
 })
 ```
 
-## 시간표 조회
+### 시간표 조회
 등록한 학교의 시간표 데이터를 조회합니다.
 
 ```javascript
@@ -142,6 +145,23 @@ timetable.getTimetable().then(result => {
 })
 ```
 
+### 수업시간 정보 조회
+```javascript
+const time = timetable.getClassTime()
+console.log(time)
+
+/*
+[ '1(09:10)',
+  '2(10:10)',
+  '3(11:10)',
+  '4(12:10)',
+  '5(13:50)',
+  '6(14:50)',
+  '7(15:50)',
+  '8(16:50)' ]
+*/
+```
+
 ## 사용 예제
 
 ```javascript
@@ -151,12 +171,20 @@ const timetable = new Timetable()
 const test = async () => {
   await timetable.init()
   await timetable.setSchool('광명경영회계고등학교')
+
+  // 전교 시간표 정보 조회
   const result = await timetable.getTimetable()
   console.log(result)
+
+  // 각 교시별 수업 시작/종료 시간 정보 조회
+  const time = timetable.getClassTime()
+  console.log(time)
 }
 ```
 
-# 데이터 형식
+## 데이터 형식
+
+### 시간표 데이터
 ```javascript
 {
   "1": {
@@ -165,7 +193,7 @@ const test = async () => {
       [ // 월요일 시간표
         {
           grade: 1,                   // 학년
-          class: 1,                  // 반
+          class: 1,                   // 반
           weekday: 1,                 // 요일 (1: 월 ~ 5: 금)
           weekdayString: '월',        // 요일 문자열
           class_time: 1,              // 교시
@@ -211,7 +239,7 @@ const test = async () => {
 ```
 
 ```javascript
-getTimetable().then(result => {
+timetable.getTimetable().then(result => {
   // 3학년 8반 시간표 (월 ~ 금)
   console.log(result[3][8])
 
@@ -223,10 +251,25 @@ getTimetable().then(result => {
 })
 ```
 
-# 문제 신고
+### 수업시간 정보
+
+```javascript
+[ '1(09:10)',
+  '2(10:10)',
+  '3(11:10)',
+  '4(12:10)',
+  '5(13:50)',
+  '6(14:50)',
+  '7(15:50)',
+  '8(16:50)' ]
+```
+
+## 문제 신고
 시간표 파싱이 되지 않거나 문제가 발생한 경우 [이슈](https://github.com/leegeunhyeok/comcigan-parser/issues)를 남겨주세요.
 
-# 변경사항
+## 변경사항
+- `0.2.0`
+  - getClassTime 메소드 추가 (각 교시별 수업 시작/종료 시간 정보) - [참조](#method-timetablegetclasstime)
 - `0.1.1`
   - tempSave 옵션 문제 수정
 - `0.1.0`
