@@ -271,7 +271,7 @@ class Timetable {
   /**
    * @description 각 수업 교시별 시작/종료시간 데이터
    */
-  async getClassTime () {
+  getClassTime () {
     return this._classTime
   }
 }
