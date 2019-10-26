@@ -9,7 +9,7 @@
  * @description 컴시간 시간표 파싱 라이브러리
  * @author Leegeunhyeok
  * @license MIT
- * @version 0.1.1
+ * @version 0.2.0
  *
  */
 
@@ -23,6 +23,7 @@ class Timetable {
     this._baseUrl = 'http://comci.kr:4081'
     this._url = 'http://comci.kr:4081/st'
     this._weekdayString = ['일', '월', '화', '수', '목', '금', '토']
+    this._classTime = []
   }
 
   /**
@@ -160,6 +161,9 @@ class Timetable {
       })
     })
 
+    // 교시별 시작/종료 시간 데이터
+    this._classTime = resultJson['일과시간']
+
     let subjectProp = ''
     let teacherProp = ''
     let timedataProp = ''
@@ -262,6 +266,13 @@ class Timetable {
     }
 
     return timetableData
+  }
+
+  /**
+   * @description 각 수업 교시별 시작/종료시간 데이터
+   */
+  async getClassTime () {
+    return this._classTime
   }
 }
 
