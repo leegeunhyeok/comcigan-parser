@@ -1,6 +1,6 @@
 {
   "name": "comcigan-parser-fixed",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Parse timetable data from comcigan.com (fix host issue)",
   "main": "index.js",
   "scripts": {
