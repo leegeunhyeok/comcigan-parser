@@ -1,7 +1,7 @@
 {
   "name": "comcigan-parser",
   "version": "0.2.1",
-  "description": "Parse timetable data from comcigan.com (fix host issue)",
+  "description": "Parse timetable data from comcigan.com",
   "main": "index.js",
   "scripts": {
     "test": "node ./test/test.js",
