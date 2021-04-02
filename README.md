@@ -5,6 +5,7 @@
 
 [![health](https://img.shields.io/github/workflow/status/leegeunhyeok/comcigan-parser/health/master?label=health&style=flat-square)](https://github.com/leegeunhyeok/comcigan-parser/actions?query=workflow%3A"health")
 [![npm version](https://img.shields.io/npm/v/comcigan-parser?style=flat-square)](https://www.npmjs.com/package/comcigan-parser)
+[![npm](https://img.shields.io/npm/dt/comcigan-parser.svg?style=flat-square)](https://www.npmjs.com/package/comcigan-parser)
 [![npm license](https://img.shields.io/npm/l/comcigan-parser?style=flat-square)](LICENSE)
 
 매주 월요일 09시에 본 라이브러리 동작 여부를 확인합니다. 위 health의 상태가 `passing`이 아니라면 컴시간 사이트 변경, 소스코드 변경 등의 문제가 발생했다는 의미이니 이슈 전달 부탁드립니다.
