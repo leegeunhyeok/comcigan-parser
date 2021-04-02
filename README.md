@@ -67,8 +67,12 @@ timetable.init(options);
 | Option   | Value  | default | Required |
 | :------- | :----: | :-----: | :------: |
 | maxGrade | number |    3    |    X     |
+| cache    | number |    0    |    X     |
 
 - `maxGrade`: 최대 학년을 지정합니다. (초등: 6, 중/고등: 3)
+- `cache`: 시간표 데이터 캐싱 시간(ms)을 지정합니다 (기본값: 0 - 비활성)
+  - 시간을 지정하면, 데이터 조회 시 지정한 시간만큼 임시로 보관하고 있다가, 이후 새로운 조회할 때 보관하던 결과 데이터를 즉시 반환합니다.
+  - 지정한 캐싱 시간이 지나면 새로 수집하며, 다시 캐싱 시간만큼 보관합니다.
 
 Return - `Promise<void>`
 
@@ -170,59 +174,31 @@ timetable.getTimetable().then((result) => {
 
 ### 수업시간 정보 조회
 
+수업 시간 정보를 반환힙니다.
+
 ```javascript
 timetable.getClassTime();
 ```
 
+---
+
 ## 활용 예시
-
-### 비동기 함수 방식
-
-```javascript
-const Timetable = require('comcigan-parser');
-const timetable = new Timetable();
-
-const test = async () => {
-  await timetable.init();
-  await timetable.setSchool('광명경영회계고등학교');
-  const result = await timetable.getTimetable();
-  console.log(result);
-};
-```
-
-### 프라미스 방식
 
 ```javascript
 const Timetable = require('comcigan-parser');
 const timetable = new Timetable();
 
 timetable
-  .init()
+  .init({ cache: 1000 * 60 * 60 }) // 캐시 1시간동안 보관
+  .then(() => timetable.setSchool('광명경영회계고등학교');)
   .then(() => {
-    return timetable.setSchool('광명경영회계고등학교');
-  })
-  .then(() => {
-    return timetable.getTimetable();
-  })
-  .then((result) => {
-    console.log(result);
+    Promise.all([timetable.getClassTime(), timetable.getTimetable()]).then(
+      (res) => {
+        console.log(res[0]); // 시간표
+        console.log(res[1]); // 수업시간정보
+      },
+    );
   });
-```
-
-```javascript
-const time = timetable.getClassTime();
-console.log(time);
-
-/*
-[ '1(09:10)',
-  '2(10:10)',
-  '3(11:10)',
-  '4(12:10)',
-  '5(13:50)',
-  '6(14:50)',
-  '7(15:50)',
-  '8(16:50)' ]
-*/
 ```
 
 ```javascript
@@ -238,7 +214,7 @@ const test = async () => {
   console.log(result);
 
   // 각 교시별 수업 시작/종료 시간 정보 조회
-  const time = timetable.getClassTime();
+  const time = await timetable.getClassTime();
   console.log(time);
 };
 ```
@@ -328,6 +304,21 @@ const test = async () => {
 ]
 ```
 
+### 수업시간 정보
+
+```javascript
+[
+  '1(09:10)',
+  '2(10:10)',
+  '3(11:10)',
+  '4(12:10)',
+  '5(13:50)',
+  '6(14:50)',
+  '7(15:50)',
+  '8(16:50)',
+];
+```
+
 응용 방법
 
 ```javascript
@@ -352,31 +343,14 @@ timetable.getTimetable().then((result) => {
 
 시간표 파싱이 되지 않거나 문제가 발생한 경우 [이슈](https://github.com/leegeunhyeok/comcigan-parser/issues)를 남겨주세요.
 
-### 수업시간 정보
-
-```javascript
-[
-  '1(09:10)',
-  '2(10:10)',
-  '3(11:10)',
-  '4(12:10)',
-  '5(13:50)',
-  '6(14:50)',
-  '7(15:50)',
-  '8(16:50)',
-];
-```
-
-## 문제 신고
-
-시간표 파싱이 되지 않거나 문제가 발생한 경우 [이슈](https://github.com/leegeunhyeok/comcigan-parser/issues)를 남겨주세요.
-
 ## 변경사항
 
 - `0.3.0`
   - 컴시간 변경사항 대응 (도메인 변경)
   - 더 원활한 데이터 수집을 위해 코어 로직 수정
+  - `getClassTime()` 사용법 변경 - 이제 프라미스를 반환합니다
   - `firstNames` 옵션 제거
+  - `cache` 옵션 추가
   - 시간표 데이터의 속성명 변경 (전: `class_time`, 후: `classTime`)
   - 시간표 데이터의 `code` 값 제거
 - `0.2.0`

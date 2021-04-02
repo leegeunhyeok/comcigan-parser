@@ -18,6 +18,9 @@ const test = async () => {
   // 교시: 1교시(0), 2교시(1), 3교시(2)..
   // 2학년 4반 화요일 3교시 시간표
   console.log(result[2][4][1][2]);
+
+  // 교시별 수업시간 정보
+  console.log(await timetable.getClassTime());
 };
 
 test();
