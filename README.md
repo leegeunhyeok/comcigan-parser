@@ -3,7 +3,7 @@
 📘🕘 컴시간 알리미 시간표 파싱 라이브러리 입니다.  
 본 라이브러리는 [컴시간](http://컴시간학생.kr) 홈페이지에서 등록된 학교의 **시간표** 데이터를 파싱하여 제공합니다.
 
-[![health](https://img.shields.io/github/workflow/status/leegeunhyeok/comcigan-parser/health/master?label=health&style=flat-square)](https://github.com/ParkSB/the-camp-lib/actions?query=workflow%3A"HealthCheck")
+[![health](https://img.shields.io/github/workflow/status/leegeunhyeok/comcigan-parser/health/master?label=health&style=flat-square)](https://github.com/leegeunhyeok/comcigan-parser/actions?query=workflow%3A"health")
 [![npm version](https://img.shields.io/npm/v/comcigan-parser?style=flat-square)](https://www.npmjs.com/package/comcigan-parser)
 [![npm license](https://img.shields.io/npm/l/comcigan-parser?style=flat-square)](LICENSE)
 
