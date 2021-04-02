@@ -15,6 +15,11 @@ const request = require('request');
 const iconv = require('iconv-lite');
 const cheerio = require('cheerio');
 
+// URL is not defined in old node.js
+if (typeof URL === 'undefined') {
+  URL = require('url').URL;
+}
+
 const HOST = 'http://컴시간학생.kr';
 
 class Timetable {
