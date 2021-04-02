@@ -24,7 +24,6 @@ class Timetable {
     this._pageSource = null;
     this._weekdayString = ['일', '월', '화', '수', '목', '금', '토'];
     this._option = {
-      tempSave: false,
       maxGrade: 3,
     };
   }
@@ -247,11 +246,6 @@ class Timetable {
       }
     }
 
-    // 옵션 중 tempSave가 활성화 된 경우
-    if (this._option.tempSave) {
-      this._tempData = timetableData;
-    }
-
     return timetableData;
   }
 
@@ -306,15 +300,6 @@ class Timetable {
     });
 
     return timetable;
-  }
-
-  /**
-   * 임시 저장된 데이터를 반환합니다.
-   *
-   * @return 임시 저장된 데이터
-   */
-  getTempData() {
-    return this._tempData || {};
   }
 }
 
