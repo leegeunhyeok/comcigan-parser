@@ -1,6 +1,6 @@
 # comcigan-parser
 
-📘🕘 컴시간 알리미 시간표 파싱 라이브러리 입니다.  
+📘🕘 본 라이브러리는 `Node.js` 환경에서 사용할 수 있는 컴시간 알리미 시간표 파싱 라이브러리 입니다.  
 본 라이브러리는 [컴시간](http://컴시간학생.kr) 홈페이지에서 등록된 학교의 **시간표** 데이터를 파싱하여 제공합니다.
 
 [![health](https://img.shields.io/github/workflow/status/leegeunhyeok/comcigan-parser/health/master?label=health&style=flat-square)](https://github.com/leegeunhyeok/comcigan-parser/actions?query=workflow%3A"health")
