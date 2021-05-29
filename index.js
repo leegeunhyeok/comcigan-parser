@@ -26,9 +26,11 @@ class Timetable {
   constructor() {
     this._baseUrl = null;
     this._url = null;
+    this._initialized = false;
     this._pageSource = null;
     this._cache = null;
     this._cacheAt = null;
+    this._schoolCode = -1;
     this._weekdayString = ['일', '월', '화', '수', '목', '금', '토'];
     this._option = {
       maxGrade: 3,
@@ -103,10 +105,7 @@ class Timetable {
           const scData = extractScData.match(/\(.*?\)/);
 
           if (scData) {
-            this._scData = scData[0]
-              .replace(/[()]/g, '')
-              .replace(/'/g, '')
-              .split(',');
+            this._scData = scData[0].replace(/[()]/g, '').replace(/'/g, '').split(',');
           } else {
             reject(new Error('sc_data 값을 찾을 수 없습니다.'));
             return;
@@ -131,8 +130,9 @@ class Timetable {
    * 시간표 데이터를 불러올 학교를 설정합니다.
    *
    * @param {string} keyword 학교 검색 키워드
+   * @returns 검색된 학교 목록 `Array<[코드, 지역, 학교이름, 학교코드]>`
    */
-  async setSchool(keyword) {
+  search(keyword) {
     if (!this._initialized) {
       throw new Error('초기화가 진행되지 않았습니다.');
     }
@@ -142,36 +142,40 @@ class Timetable {
       hexString += '%' + buf.toString(16);
     }
 
-    await new Promise((resolve, reject) => {
-      request(
-        this._baseUrl + this._extractCode + hexString,
-        (err, _res, body) => {
-          let jsonString = body.substr(0, body.lastIndexOf('}') + 1);
-          let searchData = JSON.parse(jsonString)['학교검색'];
+    return new Promise((resolve, reject) => {
+      request(this._baseUrl + this._extractCode + hexString, (err, _res, body) => {
+        let jsonString = body.substr(0, body.lastIndexOf('}') + 1);
+        let searchData = JSON.parse(jsonString)['학교검색'];
 
-          if (err) {
-            reject(err);
-          }
+        if (err) {
+          reject(err);
+        }
 
-          if (searchData.length <= 0) {
-            reject(new Error('검색된 학교가 없습니다.'));
-          }
+        if (searchData.length <= 0) {
+          reject(new Error('검색된 학교가 없습니다.'));
+        }
 
-          if (searchData.length > 1) {
-            reject(
-              new Error(
-                `검색된 학교가 많습니다. 더 자세한 학교명을 입력해주세요. 검색 결과 수: ${searchData.length}`,
-              ),
-            );
-          }
-
-          this._searchData = searchData;
-          resolve();
-        },
-      );
+        resolve(
+          searchData.map((data) => {
+            return {
+              _: data[0],
+              region: data[1],
+              name: data[2],
+              code: data[3],
+            };
+          }),
+        );
+      });
     });
+  }
 
-    this._setSchool = true;
+  /**
+   * 시간표를 조회할 학교 코드를 등록합니다
+   *
+   * @param school
+   */
+  setSchool(schoolCode) {
+    this._schoolCode = schoolCode;
     this._cache = null;
   }
 
@@ -253,7 +257,7 @@ class Timetable {
    */
   async _getData() {
     const da1 = '0';
-    const s7 = this._scData[0] + this._searchData[0][3];
+    const s7 = this._scData[0] + this._schoolCode;
     const sc3 =
       this._extractCode.split('?')[0] +
       '?' +
@@ -339,7 +343,7 @@ class Timetable {
       throw new Error('초기화가 진행되지 않았습니다.');
     }
 
-    if (!this._setSchool) {
+    if (this._schoolCode === -1) {
       throw new Error('학교 설정이 진행되지 않았습니다.');
     }
   }
