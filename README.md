@@ -79,9 +79,9 @@ Return - `Promise<void>`
 
 ---
 
-### Timetable.setSchool()
+### Timetable.search()
 
-시간표를 불러올 학교를 지정합니다.
+학교 정보를 검색합니다.
 
 > 컴시간에 등록된 학교가 아닐 경우 검색되지 않습니다.
 
@@ -92,6 +92,24 @@ timetable.search(keyword);
 | Parameter |  Type  | Required |
 | :-------- | :----: | :------: |
 | keyword   | string |    O     |
+
+Return - `Promise<학교데이터[]>`
+
+학교 데이터는 [여기](#학교-데이터) 참고
+
+---
+
+### Timetable.setSchool()
+
+시간표를 불러올 학교를 지정합니다. 학교 코드는 학교 검색을 통해 확인할 수 있습니다.
+
+```javascript
+timetable.setSchool(schoolCode);
+```
+
+| Parameter |  Type  | Required |
+| :-------- | :----: | :------: |
+| keyword   | number |    O     |
 
 Return - `Promise<void>`
 
@@ -141,6 +159,27 @@ timetable.init().then(() => {
 
 ---
 
+### 학교 검색
+
+컴시간에 등록되어있는 학교를 검색하여 결과를 반환합니다.
+
+> 검색 결과가 없는 경우 예외가 발생합니다.
+
+```javascript
+timetable.search('광명').then((schoolList) => {
+  // schoolList
+  // [
+  //   { _: 24966, region: '경기', name: '광명북중학교', code: 74350 },
+  //   { _: 24966, region: '경기', name: '광명경영회계고등학교', code: 13209 },
+  //   { _: 24966, region: '경기', name: '광명북고등학교', code: 36854 },
+  //   { _: 24966, region: '경기', name: '광명고등학교', code: 31443 },
+  //   { _: 24966, region: '경기', name: '광명중학교', code: 31098 }
+  // ]
+});
+```
+
+---
+
 ### 학교 설정
 
 컴시간에 등록되어있는 학교를 검색하고 인스턴스에 등록합니다.
@@ -148,7 +187,11 @@ timetable.init().then(() => {
 > 학교가 여러개 조회되거나 검색 결과가 없는 경우 예외가 발생합니다.
 
 ```javascript
-timetable.setSchool('광명경영회계고등학교').then(() => {
+const mySchool = schoolList.find((school) => {
+  return school.region === '경기' && school.name === '광명경영회계고등학교';
+});
+
+timetable.setSchool(mySchool.code).then(() => {
   // 학교 설정 완료..
 });
 ```
@@ -189,16 +232,23 @@ timetable.getClassTime();
 const Timetable = require('comcigan-parser');
 const timetable = new Timetable();
 
+const schoolFinder = (schoolName, region) => (schoolList) => {
+  const targetSchool = schoolList.find((school) => {
+    return school.region === region && school.name.includes(schoolName);
+  });
+  return targetSchool;
+};
+
 timetable
   .init({ cache: 1000 * 60 * 60 }) // 캐시 1시간동안 보관
-  .then(() => timetable.setSchool('광명경영회계고등학교');)
+  .then(() => timetable.search('광명'))
+  .then(schoolFinder('광명경영회계고등학교', '경기'))
+  .then((school) => timetable.setSchool(school.code))
   .then(() => {
-    Promise.all([timetable.getClassTime(), timetable.getTimetable()]).then(
-      (res) => {
-        console.log(res[0]); // 시간표
-        console.log(res[1]); // 수업시간정보
-      },
-    );
+    Promise.all([timetable.getClassTime(), timetable.getTimetable()]).then((res) => {
+      console.log(res[0]); // 시간표
+      console.log(res[1]); // 수업시간정보
+    });
   });
 ```
 
@@ -208,7 +258,8 @@ const timetable = new Timetable();
 
 const test = async () => {
   await timetable.init();
-  await timetable.setSchool('광명경영회계고등학교');
+  const school = await timetable.search('광명경영회계고등학교');
+  await timetable.setSchool(school[0].code);
 
   // 전교 시간표 정보 조회
   const result = await timetable.getTimetable();
@@ -221,6 +272,17 @@ const test = async () => {
 ```
 
 ## 데이터 형식
+
+### 학교 데이터
+
+```javascript
+{
+  _: 24966, // 알 수 없는 코드
+  region:'경기', // 지역
+  name: '광명경영회계고등학교', // 학교명
+  code: 13209 // 학교코드
+}
+```
 
 ### 시간표 데이터
 
@@ -308,16 +370,7 @@ const test = async () => {
 ### 수업시간 정보
 
 ```javascript
-[
-  '1(09:10)',
-  '2(10:10)',
-  '3(11:10)',
-  '4(12:10)',
-  '5(13:50)',
-  '6(14:50)',
-  '7(15:50)',
-  '8(16:50)',
-];
+['1(09:10)', '2(10:10)', '3(11:10)', '4(12:10)', '5(13:50)', '6(14:50)', '7(15:50)', '8(16:50)'];
 ```
 
 응용 방법
@@ -346,6 +399,12 @@ timetable.getTimetable().then((result) => {
 
 ## 변경사항
 
+- `1.0.0`
+  - 학교 검색과 설정 기능을 분리
+  - 학교 설정 방식 변경 (자세한 사항은 [여기](#학교-설정) 참조)
+  - 학교 검색 기능을 수행하는 `search` 메소드 추가
+  - 검색 기능 분리에 따른 `setSchool` 메소드 수정
+  - 동일한 이름의 학교가 조회되었을 때 예외를 발생시키던 로직 제거 ([#12](https://github.com/leegeunhyeok/comcigan-parser/issues/12))
 - `0.3.0`
   - 컴시간 변경사항 대응 (도메인 변경)
   - 더 원활한 데이터 수집을 위해 코어 로직 수정

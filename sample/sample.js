@@ -10,7 +10,16 @@ const timetable = new Timetable();
 
 const test = async () => {
   await timetable.init();
-  await timetable.setSchool('광명경영회계고등학교');
+
+  // 학교 검색 및 특정 학교 찾기
+  const schoolList = await timetable.search('광명');
+  console.log(schoolList);
+  const targetSchool = schoolList.find((school) => {
+    return school.region === '경기' && school.name === '광명경영회계고등학교';
+  });
+
+  // 학교 설정
+  await timetable.setSchool(targetSchool.code);
   const result = await timetable.getTimetable();
 
   // result[학년][반][요일][교시]
