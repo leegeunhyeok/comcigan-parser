@@ -111,7 +111,7 @@ timetable.setSchool(schoolCode);
 | :-------- | :----: | :------: |
 | keyword   | number |    O     |
 
-Return - `Promise<void>`
+Return - `void`
 
 ---
 
@@ -191,9 +191,7 @@ const mySchool = schoolList.find((school) => {
   return school.region === '경기' && school.name === '광명경영회계고등학교';
 });
 
-timetable.setSchool(mySchool.code).then(() => {
-  // 학교 설정 완료..
-});
+timetable.setSchool(mySchool.code);
 ```
 
 ---
@@ -259,7 +257,7 @@ const timetable = new Timetable();
 const test = async () => {
   await timetable.init();
   const school = await timetable.search('광명경영회계고등학교');
-  await timetable.setSchool(school[0].code);
+  timetable.setSchool(school[0].code);
 
   // 전교 시간표 정보 조회
   const result = await timetable.getTimetable();
