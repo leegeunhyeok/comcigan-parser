@@ -31,5 +31,5 @@ const test = async () => {
   // 교시별 수업시간 정보
   console.log(await timetable.getClassTime());
 };
-
+//a
 test();
