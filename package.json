@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Parse timetable data from comcigan.com",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "node ./sample/sample.js",
     "standard": "standard && node my-tests.js"
