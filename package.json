@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Parse timetable data from comcigan.com",
   "main": "index.js",
+  "types": "@types/index.d.ts",
   "scripts": {
     "test": "node ./sample/sample.js",
     "standard": "standard && node my-tests.js"
@@ -25,7 +26,8 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.5",
     "iconv-lite": "^0.4.24",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
     "standard": "^12.0.1"
